@@ -1,0 +1,40 @@
+.scenario-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.scenario-title h1 {
+  margin: 0;
+  font-size: 1.8em;
+  color: #1f2937;
+}
+
+.scenario-title.editing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.title-input {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #1f2937;
+  padding: 8px;
+  min-width: 300px;
+}
+
+.icon-btn {
+  padding: 8px;
+  background: transparent;
+  color: #667eea;
+  border: 1px solid #667eea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: #667eea;
+  color: white;
+}

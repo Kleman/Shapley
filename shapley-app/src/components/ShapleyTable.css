@@ -1,0 +1,115 @@
+.shapley-table-container {
+  width: 100%;
+}
+
+.shapley-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.shapley-table th {
+  background: #667eea;
+  color: white;
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid #5568d3;
+}
+
+.shapley-table td {
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+}
+
+.shapley-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.entity-name-cell {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.value-cell {
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  color: #374151;
+  font-weight: 600;
+}
+
+.percentage-cell {
+  min-width: 200px;
+}
+
+.percentage-bar-container {
+  position: relative;
+  width: 100%;
+  height: 28px;
+  background: #f3f4f6;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.percentage-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.3s ease;
+}
+
+.percentage-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 13px;
+  z-index: 1;
+  text-shadow: 0 0 3px white;
+}
+
+.total-row {
+  background: #f9fafb;
+  border-top: 2px solid #667eea;
+}
+
+.total-row td {
+  padding: 14px;
+  font-size: 1.05em;
+}
+
+.table-empty {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.shapley-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.shapley-info p {
+  margin: 0;
+  color: #1e40af;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.shapley-info strong {
+  color: #1e3a8a;
+}

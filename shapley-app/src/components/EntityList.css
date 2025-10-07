@@ -1,0 +1,146 @@
+.entity-list {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.entity-list h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #1f2937;
+}
+
+.entity-list h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #374151;
+  font-size: 1.1em;
+}
+
+.add-entity-section,
+.entities-section,
+.add-synergy-section,
+.synergies-list {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.add-synergy-section:last-child,
+.synergies-list:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.input-group input {
+  flex: 1;
+}
+
+.entity-items,
+.synergy-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.entity-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #f9fafb;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.entity-item:hover {
+  background: #f3f4f6;
+}
+
+.entity-name {
+  font-weight: 600;
+  color: #1f2937;
+  flex: 1;
+}
+
+.entity-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.small-input {
+  width: 120px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.small-btn {
+  padding: 6px 10px;
+}
+
+.empty-message {
+  color: #6b7280;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+.synergy-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.synergy-inputs select,
+.synergy-value-input {
+  padding: 8px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+}
+
+.synergy-inputs select {
+  flex: 1;
+  min-width: 150px;
+}
+
+.synergy-value-input {
+  width: 140px;
+}
+
+.link-icon {
+  color: #667eea;
+  flex-shrink: 0;
+}
+
+.synergy-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  background: #f9fafb;
+  border-radius: 6px;
+}
+
+.synergy-label {
+  color: #374151;
+  font-size: 14px;
+}
+
+.synergy-value {
+  font-weight: 600;
+  color: #667eea;
+  font-size: 14px;
+}
