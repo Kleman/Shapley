@@ -30,7 +30,8 @@ function App() {
     setSynergies(prev => {
       const newSynergies = { ...prev }
       Object.keys(newSynergies).forEach(key => {
-        if (key.includes(id)) {
+        // Remove first-order value (key === id) or coalition synergies (key includes id)
+        if (key === id || key.includes(id)) {
           delete newSynergies[key]
         }
       })
@@ -39,11 +40,20 @@ function App() {
   }, [])
 
   const updateSynergy = useCallback((entity1Id, entity2Id, value) => {
-    const key = [entity1Id, entity2Id].sort().join('-')
-    setSynergies(prev => ({
-      ...prev,
-      [key]: parseFloat(value) || 0
-    }))
+    if (entity1Id === entity2Id) {
+      // First-order value - store with just the entity ID
+      setSynergies(prev => ({
+        ...prev,
+        [entity1Id]: parseFloat(value) || 0
+      }))
+    } else {
+      // Coalition synergy - store with sorted IDs
+      const key = [entity1Id, entity2Id].sort().join('-')
+      setSynergies(prev => ({
+        ...prev,
+        [key]: parseFloat(value) || 0
+      }))
+    }
   }, [])
 
   const deleteSynergy = useCallback((key) => {

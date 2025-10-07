@@ -96,7 +96,7 @@ function EntityList({ entities, onAddEntity, onRemoveEntity, synergies, onUpdate
                 <div className="entity-controls">
                   <input
                     type="number"
-                    placeholder="First-order value"
+                    placeholder="Individual value"
                     value={getSynergy(entity.id, entity.id) || ''}
                     onChange={(e) => onUpdateSynergy(entity.id, entity.id, e.target.value)}
                     className="small-input"
@@ -147,7 +147,7 @@ function EntityList({ entities, onAddEntity, onRemoveEntity, synergies, onUpdate
             
             <input
               type="number"
-              placeholder="Coalition value"
+              placeholder="Total coalition value"
               value={synergyValue}
               onChange={(e) => setSynergyValue(e.target.value)}
               className="synergy-value-input"
@@ -161,7 +161,7 @@ function EntityList({ entities, onAddEntity, onRemoveEntity, synergies, onUpdate
       )}
 
       {/* Existing Synergies */}
-      {Object.keys(synergies).filter(key => !key.includes('-') || key.split('-').length === 2).length > 0 && (
+      {Object.keys(synergies).length > 0 && (
         <div className="synergies-list">
           <h3>Defined Values</h3>
           <ul className="synergy-items">
@@ -171,7 +171,7 @@ function EntityList({ entities, onAddEntity, onRemoveEntity, synergies, onUpdate
               const isEditing = editingSynergy === entity.id
               return (
                 <li key={entity.id} className="synergy-item">
-                  <span className="synergy-label">{entity.name} (first-order)</span>
+                  <span className="synergy-label">{entity.name} (individual)</span>
                   {isEditing ? (
                     <div className="synergy-edit">
                       <input

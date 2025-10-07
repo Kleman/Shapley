@@ -1,7 +1,7 @@
 /**
  * Calculate Shapley values for entities given their synergies
  * @param {Array} entities - Array of entity objects with id and name
- * @param {Object} synergies - Object mapping entity IDs or pairs to their values
+ * @param {Object} synergies - Object mapping entity IDs (first-order) or pairs to coalition values
  * @returns {Object} - Object mapping entity IDs to their Shapley values
  */
 export function calculateShapleyValues(entities, synergies) {
@@ -15,39 +15,70 @@ export function calculateShapleyValues(entities, synergies) {
     shapleyValues[entity.id] = 0
   })
 
-  // Helper function to get coalition value
+  /**
+   * Get the characteristic function value v(S) for a coalition S
+   * This represents the total value that coalition S can generate together
+   */
   const getCoalitionValue = (coalition) => {
     if (coalition.length === 0) return 0
+    
     if (coalition.length === 1) {
+      // Single entity - return its individual value
       return synergies[coalition[0]] || 0
     }
 
-    // For two-entity coalition, check for direct synergy value
     if (coalition.length === 2) {
+      // Two entities - return the coalition value if defined, otherwise sum individuals
       const key = [...coalition].sort().join('-')
-      return synergies[key] || 0
+      return synergies[key] ?? ((synergies[coalition[0]] || 0) + (synergies[coalition[1]] || 0))
     }
 
-    // For larger coalitions, sum up all pairwise synergies and individual values
-    let value = 0
-    coalition.forEach(entityId => {
-      // Add individual contribution
-      value += (synergies[entityId] || 0)
-    })
-
-    // Add pairwise synergies (avoiding double counting)
+    // For larger coalitions, use superadditivity assumption:
+    // v(S) >= sum of best pairwise coalitions + remaining individuals
+    // This is a heuristic since we only have pairwise data
+    
+    let totalValue = 0
+    const usedEntities = new Set()
+    
+    // First, find the best pairwise coalitions
+    const pairs = []
     for (let i = 0; i < coalition.length; i++) {
       for (let j = i + 1; j < coalition.length; j++) {
         const key = [coalition[i], coalition[j]].sort().join('-')
-        const pairValue = synergies[key] || 0
-        const individual1 = synergies[coalition[i]] || 0
-        const individual2 = synergies[coalition[j]] || 0
-        // Synergy is the extra value beyond individual contributions
-        value += Math.max(0, pairValue - individual1 - individual2)
+        if (synergies.hasOwnProperty(key)) {
+          const individual1 = synergies[coalition[i]] || 0
+          const individual2 = synergies[coalition[j]] || 0
+          const synergyBonus = synergies[key] - individual1 - individual2
+          pairs.push({
+            entities: [coalition[i], coalition[j]],
+            value: synergies[key],
+            bonus: synergyBonus,
+            key: key
+          })
+        }
       }
     }
-
-    return value
+    
+    // Sort pairs by synergy bonus (highest first)
+    pairs.sort((a, b) => b.bonus - a.bonus)
+    
+    // Greedily select non-overlapping pairs with positive synergy
+    for (const pair of pairs) {
+      if (pair.bonus > 0 && !usedEntities.has(pair.entities[0]) && !usedEntities.has(pair.entities[1])) {
+        totalValue += pair.value
+        usedEntities.add(pair.entities[0])
+        usedEntities.add(pair.entities[1])
+      }
+    }
+    
+    // Add individual values for remaining entities
+    coalition.forEach(entityId => {
+      if (!usedEntities.has(entityId)) {
+        totalValue += synergies[entityId] || 0
+      }
+    })
+    
+    return totalValue
   }
 
   // Generate all subsets (coalitions)

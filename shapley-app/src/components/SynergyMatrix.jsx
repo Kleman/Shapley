@@ -21,11 +21,19 @@ function MatrixCell({ entity1Id, entity2Id, value, isDiagonal, backgroundColor, 
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
       setIsEditing(false)
+    } else if (e.key === 'Enter') {
+      e.preventDefault()
+      handleSubmit(e)
     }
   }
 
-  const handleBlur = () => {
-    setIsEditing(false)
+  const handleBlur = (e) => {
+    // Only close if we're not clicking on the form itself
+    setTimeout(() => {
+      if (!e.currentTarget.contains(document.activeElement)) {
+        setIsEditing(false)
+      }
+    }, 100)
   }
 
   if (isEditing) {
@@ -47,7 +55,7 @@ function MatrixCell({ entity1Id, entity2Id, value, isDiagonal, backgroundColor, 
           />
         </form>
         {isDiagonal && (
-          <span className="cell-label">1st order</span>
+          <span className="cell-label">individual</span>
         )}
       </td>
     )
@@ -63,7 +71,7 @@ function MatrixCell({ entity1Id, entity2Id, value, isDiagonal, backgroundColor, 
         {value || 0}
       </span>
       {isDiagonal && (
-        <span className="cell-label">1st order</span>
+        <span className="cell-label">individual</span>
       )}
     </td>
   )
