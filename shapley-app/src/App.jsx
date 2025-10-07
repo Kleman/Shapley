@@ -46,6 +46,14 @@ function App() {
     }))
   }, [])
 
+  const deleteSynergy = useCallback((key) => {
+    setSynergies(prev => {
+      const newSynergies = { ...prev }
+      delete newSynergies[key]
+      return newSynergies
+    })
+  }, [])
+
   const getSynergy = useCallback((entity1Id, entity2Id) => {
     if (entity1Id === entity2Id) {
       // Diagonal - first order value
@@ -102,6 +110,7 @@ function App() {
             onRemoveEntity={removeEntity}
             synergies={synergies}
             onUpdateSynergy={updateSynergy}
+            onDeleteSynergy={deleteSynergy}
             getSynergy={getSynergy}
           />
         </div>
@@ -121,6 +130,7 @@ function App() {
             <SynergyMatrix 
               entities={entities}
               getSynergy={getSynergy}
+              onUpdateSynergy={updateSynergy}
             />
           </section>
 

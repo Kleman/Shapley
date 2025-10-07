@@ -144,3 +144,74 @@
   color: #667eea;
   font-size: 14px;
 }
+
+.synergy-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synergy-edit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.synergy-edit-input {
+  width: 80px;
+  padding: 4px 8px;
+  border: 2px solid #667eea;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.edit-btn, .save-btn, .cancel-btn, .delete-btn {
+  padding: 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.edit-btn {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.edit-btn:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.save-btn {
+  background: #10b981;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #059669;
+}
+
+.cancel-btn {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.cancel-btn:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.delete-btn {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.delete-btn:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}

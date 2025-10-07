@@ -22,7 +22,7 @@ Perfect for analyzing partnerships, team contributions, resource allocation, and
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/Shapley.git
+git clone https://github.com/Kleman/Shapley.git
 
 # Navigate to the app directory
 cd Shapley/shapley-app

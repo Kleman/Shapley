@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { Plus, Trash2, Link } from 'lucide-react'
+import { Plus, Trash2, Link, Edit2, Check, X } from 'lucide-react'
 import './EntityList.css'
 
-function EntityList({ entities, onAddEntity, onRemoveEntity, synergies, onUpdateSynergy, getSynergy }) {
+function EntityList({ entities, onAddEntity, onRemoveEntity, synergies, onUpdateSynergy, onDeleteSynergy, getSynergy }) {
   const [newEntityName, setNewEntityName] = useState('')
   const [selectedEntity1, setSelectedEntity1] = useState(null)
   const [selectedEntity2, setSelectedEntity2] = useState(null)
   const [synergyValue, setSynergyValue] = useState('')
+  const [editingSynergy, setEditingSynergy] = useState(null)
+  const [editValue, setEditValue] = useState('')
 
   const handleAddEntity = () => {
     if (newEntityName.trim()) {
@@ -25,6 +27,37 @@ function EntityList({ entities, onAddEntity, onRemoveEntity, synergies, onUpdate
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleAddEntity()
+    }
+  }
+
+  const startEditing = (key, currentValue) => {
+    setEditingSynergy(key)
+    setEditValue(currentValue.toString())
+  }
+
+  const saveEdit = () => {
+    if (editingSynergy && editValue !== '') {
+      if (editingSynergy.includes('-')) {
+        // Coalition synergy
+        const [id1, id2] = editingSynergy.split('-')
+        onUpdateSynergy(id1, id2, editValue)
+      } else {
+        // First-order synergy
+        onUpdateSynergy(editingSynergy, editingSynergy, editValue)
+      }
+    }
+    setEditingSynergy(null)
+    setEditValue('')
+  }
+
+  const cancelEdit = () => {
+    setEditingSynergy(null)
+    setEditValue('')
+  }
+
+  const deleteSynergy = (key) => {
+    if (onDeleteSynergy) {
+      onDeleteSynergy(key)
     }
   }
 
@@ -135,10 +168,37 @@ function EntityList({ entities, onAddEntity, onRemoveEntity, synergies, onUpdate
             {entities.map(entity => {
               const value = getSynergy(entity.id, entity.id)
               if (!value) return null
+              const isEditing = editingSynergy === entity.id
               return (
                 <li key={entity.id} className="synergy-item">
                   <span className="synergy-label">{entity.name} (first-order)</span>
-                  <span className="synergy-value">{value}</span>
+                  {isEditing ? (
+                    <div className="synergy-edit">
+                      <input
+                        type="number"
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                        className="synergy-edit-input"
+                        autoFocus
+                      />
+                      <button onClick={saveEdit} className="save-btn">
+                        <Check size={14} />
+                      </button>
+                      <button onClick={cancelEdit} className="cancel-btn">
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="synergy-controls">
+                      <span className="synergy-value">{value}</span>
+                      <button onClick={() => startEditing(entity.id, value)} className="edit-btn">
+                        <Edit2 size={14} />
+                      </button>
+                      <button onClick={() => deleteSynergy(entity.id)} className="delete-btn">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  )}
                 </li>
               )
             })}
@@ -149,12 +209,39 @@ function EntityList({ entities, onAddEntity, onRemoveEntity, synergies, onUpdate
                 const entity1 = entities.find(e => e.id === id1)
                 const entity2 = entities.find(e => e.id === id2)
                 if (!entity1 || !entity2) return null
+                const isEditing = editingSynergy === key
                 return (
                   <li key={key} className="synergy-item">
                     <span className="synergy-label">
                       {entity1.name} ↔ {entity2.name}
                     </span>
-                    <span className="synergy-value">{synergies[key]}</span>
+                    {isEditing ? (
+                      <div className="synergy-edit">
+                        <input
+                          type="number"
+                          value={editValue}
+                          onChange={(e) => setEditValue(e.target.value)}
+                          className="synergy-edit-input"
+                          autoFocus
+                        />
+                        <button onClick={saveEdit} className="save-btn">
+                          <Check size={14} />
+                        </button>
+                        <button onClick={cancelEdit} className="cancel-btn">
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="synergy-controls">
+                        <span className="synergy-value">{synergies[key]}</span>
+                        <button onClick={() => startEditing(key, synergies[key])} className="edit-btn">
+                          <Edit2 size={14} />
+                        </button>
+                        <button onClick={() => deleteSynergy(key)} className="delete-btn">
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    )}
                   </li>
                 )
               })}

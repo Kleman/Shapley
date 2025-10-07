@@ -1,6 +1,75 @@
+import { useState } from 'react'
 import './SynergyMatrix.css'
 
-function SynergyMatrix({ entities, getSynergy }) {
+function MatrixCell({ entity1Id, entity2Id, value, isDiagonal, backgroundColor, onUpdateSynergy }) {
+  const [isEditing, setIsEditing] = useState(false)
+  const [editValue, setEditValue] = useState('')
+
+  const handleClick = () => {
+    if (!onUpdateSynergy) return
+    setEditValue(value || '')
+    setIsEditing(true)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const newValue = parseFloat(editValue) || 0
+    onUpdateSynergy(entity1Id, entity2Id, newValue)
+    setIsEditing(false)
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      setIsEditing(false)
+    }
+  }
+
+  const handleBlur = () => {
+    setIsEditing(false)
+  }
+
+  if (isEditing) {
+    return (
+      <td
+        className={`matrix-cell ${isDiagonal ? 'diagonal' : ''} editing`}
+        style={{ backgroundColor }}
+      >
+        <form onSubmit={handleSubmit}>
+          <input
+            type="number"
+            step="any"
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={handleBlur}
+            autoFocus
+            className="cell-input"
+          />
+        </form>
+        {isDiagonal && (
+          <span className="cell-label">1st order</span>
+        )}
+      </td>
+    )
+  }
+
+  return (
+    <td
+      className={`matrix-cell ${isDiagonal ? 'diagonal' : ''} ${onUpdateSynergy ? 'editable' : ''}`}
+      style={{ backgroundColor }}
+      onClick={handleClick}
+    >
+      <span className="cell-value">
+        {value || 0}
+      </span>
+      {isDiagonal && (
+        <span className="cell-label">1st order</span>
+      )}
+    </td>
+  )
+}
+
+function SynergyMatrix({ entities, getSynergy, onUpdateSynergy }) {
   if (entities.length === 0) {
     return (
       <div className="matrix-empty">
@@ -55,18 +124,15 @@ function SynergyMatrix({ entities, getSynergy }) {
                   const value = getSynergy(entity1.id, entity2.id)
                   const isDiagonal = entity1.id === entity2.id
                   return (
-                    <td
+                    <MatrixCell
                       key={entity2.id}
-                      className={`matrix-cell ${isDiagonal ? 'diagonal' : ''}`}
-                      style={{ backgroundColor: getColor(value) }}
-                    >
-                      <span className="cell-value">
-                        {value || 0}
-                      </span>
-                      {isDiagonal && (
-                        <span className="cell-label">1st order</span>
-                      )}
-                    </td>
+                      entity1Id={entity1.id}
+                      entity2Id={entity2.id}
+                      value={value}
+                      isDiagonal={isDiagonal}
+                      backgroundColor={getColor(value)}
+                      onUpdateSynergy={onUpdateSynergy}
+                    />
                   )
                 })}
               </tr>
